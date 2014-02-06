@@ -1,0 +1,71 @@
+10 '********************************
+20 '*                              *
+30 '*            TAGGING           *
+40 '*                              *
+50 '*             J.W.L            *
+60 '*                              *
+70 '********************************
+80 N=5
+90 X=20
+100 DIM INFO$(N,20),INFO.ALL(N),INFO.N(N)
+110 DIM SHOW$(N),Y(N)
+120 STRINGS$=CHR$(13)+"PHMK"+CHR$(8)
+130 FOR J=0 TO N : Y(J)=5+2*J : NEXT
+140 '
+150 CLS : KEY OFF
+160 LOCATE Y(0),X : PRINT"DATE    :"
+170 LOCATE Y(1),X : PRINT"NAME    :"
+180 LOCATE Y(2),X : PRINT"CATCHER :"
+190 LOCATE Y(3),X : PRINT"PRINT"
+200 LOCATE Y(4),X : PRINT"EXIT"
+210 I=0
+220 GOTO 450
+230 '===================== MAIN ======================
+240 PRESS$=INKEY$
+250 IF PRESS$="" THEN 240
+260 IF LEN(PRESS$)=2 OR ASC(PRESS$)<32 THEN PRESS$=RIGHT$(PRESS$,1) : GOTO 330
+270 IF I>N-3 THEN BEEP : GOTO 240
+280 '----- [ DATA ] -----
+290 IF TYPE=0 THEN DATAS$="" : TYPE=1
+300 DATAS$=DATAS$+PRESS$
+310 GOTO 600
+320 '----- [ HOT KEY ] -----
+330 PRESS=INSTR(STRINGS$,PRESS$)
+340 ON PRESS GOTO 370,430,430,500,500,550
+350 BEEP : GOTO 240
+360 '[ enter ]
+370 IF I>N-3 THEN 650
+380 SHOW$(I)=DATAS$
+390 IF TYPE=0 THEN 430
+400 INFO$(I,INFO.ALL(I))=DATAS$
+410 INFO.ALL(I)=INFO.ALL(I)+1
+420 '[ skip ]
+430 LOCATE Y(I),15 : PRINT" "
+440 IF PRESS=3 THEN I=(I-1+N) MOD N ELSE I=(I+1) MOD N
+450 LOCATE Y(I),15 : PRINT"*"
+460 DATAS$=SHOW$(I)
+470 TYPE=0
+480 GOTO 600
+490 '[ memory ]
+500 IF INFO.ALL(I)=0 THEN BEEP : GOTO 240
+510 INFO.N(I)=(INFO.N(I)+1) MOD INFO.ALL(I)
+520 DATAS$=INFO$(I,INFO.N(I))
+530 GOTO 600
+540 '[ backspace ]
+550 IF DATAS$="" THEN BEEP : GOTO 240
+560 TYPE=1
+570 DATAS$=LEFT$(DATAS$,LEN(DATAS$)-1)
+580 GOTO 600
+590 '
+600 LOCATE Y(I),X+10 : PRINT SPACE$(20)
+610 LOCATE Y(I),X+10 : PRINT DATAS$
+620 GOTO 240
+630 '====================================================
+640 '----- [ PRINT ] -----
+650 IF I=N-1 THEN KEY ON : END
+660 LOCATE 20
+670 PRINT"DATE    :";SHOW$(0)
+680 PRINT"NAME    :";SHOW$(1)
+690 PRINT"CATCHER :";SHOW$(2)
+700 GOTO 600
+
