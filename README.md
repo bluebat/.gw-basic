@@ -1,4 +1,4 @@
 .gw-basic
 =========
 
-Trail programs for GW-BASIC
+Trial programs for GW-BASIC
